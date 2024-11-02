@@ -25,11 +25,14 @@ $H_A$ There is a statistical difference between at least two races with the freq
 source(file="fisherXY.R")
 require(tidyverse)
 require(tigerstats)
+require(haven)
 require(knitr)
 require(foreign)
+library(haven)
 ```
+
 ```{r, eval=FALSE}
-GSS <-read.dta(file="GSSxxxx.dta")
+GSS <-read_dta(file="GSS1998.dta")
 GSS <- droplevels(GSS)
 mydata <- select(GSS,race,age,eatout)
 mydata <- na.omit(mydata)
@@ -37,7 +40,12 @@ mydata <- na.omit(mydata)
 
 
 
+# Methods
+RACE IS CAT  
 
+EATING OUT IS CAT  
+
+SO WE USE THE CAT ~ CAT HELPER FILE  
 
 
 
