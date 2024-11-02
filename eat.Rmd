@@ -10,7 +10,7 @@ date: "`r Sys.Date()`"
     
 ---
 
-```{r setup, include=FALSE}
+```{r, eat, setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
@@ -21,7 +21,7 @@ $H_0$ There is no difference among the various races with frequency of eating ou
 $H_A$ There is a statistical difference between at least two races with the frequency of eating out  
 
 
-```{r include=FALSE,echo=FALSE}
+```{r,datadata, include=FALSE,echo=FALSE}
 source(file="fisherXY.R")
 require(tidyverse)
 require(tigerstats)
@@ -29,9 +29,10 @@ require(haven)
 require(knitr)
 require(foreign)
 library(haven)
+library(plyr)
 ```
 
-```{r, eval=FALSE}
+```{r,data,eat.rmd,eval=FALSE}
 GSS <-read_dta(file="GSS1998.dta")
 GSS <- droplevels(GSS)
 mydata <- select(GSS,race,age,eatout)
@@ -48,5 +49,27 @@ EATING OUT IS CAT
 SO WE USE THE CAT ~ CAT HELPER FILE  
 
 
+```{r}
+barchartGC(~race + eatout,data=mydata)
+barchartGC(~race + eatout,data=mydata, type="percent")
 
+```
+The races are white, black and other. The blue represents ate out last week, the orange represents who did not eat out. White people eat out the most rather than black and other.
+
+```{r}
+table1 <- xtabs(~race + eatout, data=mydata)
+rowPerc(table1)
+colPerc(table1)
+```
+
+The numerical results show that the white people which is 83.11% eat out more a week then the 69.04% that don't. 
+
+```{r}
+chisq.test(table1)
+chisqtestGC(table1)
+fisherXY(mydata$race,mydata$eatout,printAll=T)
+```
+The chi score shows the p-value is 0.00002, therefor we reject the null hypothesis that there is no variance between the races. 
+
+The fisher test shows the p-value is 0.593 so we fail to reject the null hypothesis meaning there IS a difference between the white and black races while eating out. There is no evidence between a difference with the black and white races. 
 
